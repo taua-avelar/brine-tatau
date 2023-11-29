@@ -10,13 +10,13 @@ import { useKeenSlider } from 'keen-slider/react'
 
 
 export default function Home() {
-  const [count, setCount] = useState(20);
+  const [fillLevel, setFillLevel] = useState(0);
   const [heartBoom, setHeartBoom] = useState(false);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
 
   const handleHeartClick = () => {
-    setCount(count * 2);
+    setFillLevel(fillLevel + 20);
     setCurrentMessageIndex(() => {
       let randomIndex = Math.floor(Math.random() * messages.length) + 1;
       while (randomIndex === currentMessageIndex) {
@@ -26,20 +26,24 @@ export default function Home() {
     }); 
   };
 
+  const gradientStyle = {
+    backgroundImage: `linear-gradient(to top, red ${fillLevel}%, transparent ${fillLevel}%)`,
+  };
+
   useEffect(() => {
-    if (count > 160) {
+    if (fillLevel >= 100) {
       setHeartBoom(true);
+      setFillLevel(0); 
 
       const messageIndex = currentMessageIndex
       setCurrentMessageIndex(0);
 
       setTimeout(() => {
         setHeartBoom(false);
-        setCount(20); 
         setCurrentMessageIndex(messageIndex+1)
       }, 1000);
     }
-  }, [count]); 
+  }, [fillLevel]); 
 
   const [sliderRef] = useKeenSlider({
     mode: "free",
@@ -53,24 +57,16 @@ export default function Home() {
   return (
   <main className={styles.main}>
     <header className={styles.header}>
-      <h1 className={styles.fadeIn}>Oiii amor!!</h1>
-
-        <span
-          role="button"
-          aria-label="heart"
-          className={`${styles.heart} ${heartBoom ? styles.explode : ''}`}
-          onClick={handleHeartClick}
-          style={{ fontSize: `${count}px`}}
-        >
-          ❤️ 
-        </span>
-
-      <div className={styles.imageContainer}>
+      <div 
+        className={styles.imageContainer}
+        onClick={handleHeartClick}
+      >
       <Image
             src={cartoon}
             width={200}
             height={200}
             alt="nos"
+            className={styles.image}
           />
       </div>
       <p key={currentMessageIndex} className={styles.message}>{messages[currentMessageIndex]}</p>
@@ -88,6 +84,8 @@ export default function Home() {
         <div className="keen-slider__slide number-slide5">fotos</div>
         <div className="keen-slider__slide number-slide6">fotos</div>
       </div>
+
+      
     </header>
   </main>
   );

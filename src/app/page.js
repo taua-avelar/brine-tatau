@@ -16,7 +16,20 @@ export default function Home() {
 
 
   const handleHeartClick = () => {
-    setFillLevel(fillLevel + 20);
+    let increment = 1; // Increment value
+    const incrementAmount = fillLevel+20; // Desired fill increment
+    const intervalTime = 40; // Time between increments in milliseconds
+  
+    const interval = setInterval(() => {
+      setFillLevel((prevFillLevel) => {
+        const newFillLevel = prevFillLevel + increment;
+        if (newFillLevel >= incrementAmount) {
+          clearInterval(interval); // Stop the interval once it reaches the desired amount
+          return incrementAmount;
+        }
+        return newFillLevel;
+      });
+    }, intervalTime);
     setCurrentMessageIndex(() => {
       let randomIndex = Math.floor(Math.random() * messages.length) + 1;
       while (randomIndex === currentMessageIndex) {
@@ -26,19 +39,16 @@ export default function Home() {
     }); 
   };
 
-  const gradientStyle = {
-    backgroundImage: `linear-gradient(to top, red ${fillLevel}%, transparent ${fillLevel}%)`,
-  };
 
   useEffect(() => {
     if (fillLevel >= 100) {
       setHeartBoom(true);
-      setFillLevel(0); 
 
       const messageIndex = currentMessageIndex
       setCurrentMessageIndex(0);
 
       setTimeout(() => {
+        setFillLevel(0); 
         setHeartBoom(false);
         setCurrentMessageIndex(messageIndex+1)
       }, 1000);
@@ -53,6 +63,11 @@ export default function Home() {
       spacing: 15,
     },
   })
+
+
+  const gradientStyle = {
+    backgroundImage: `linear-gradient(to top, red ${fillLevel}%, transparent ${fillLevel}%)`,
+  };
   
   return (
   <main className={styles.main}>
@@ -60,6 +75,8 @@ export default function Home() {
       <div 
         className={styles.imageContainer}
         onClick={handleHeartClick}
+        style={gradientStyle}
+
       >
       <Image
             src={cartoon}

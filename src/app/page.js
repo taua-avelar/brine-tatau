@@ -48,7 +48,7 @@ export default function Home() {
         setTimeout(() => {
           setFillLevel(0); 
           setCurrentMessageIndex(messageIndex+1)
-        }, 1000);
+        }, 1500);
       }, 1000)
 
     }

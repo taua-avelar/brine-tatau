@@ -1,95 +1,94 @@
+"use client";
+
+import { useState, useEffect } from 'react';
+import styles from './page.module.css'; 
+import cartoon from '../../public/cartoon-no-bg.png'
 import Image from 'next/image'
-import styles from './page.module.css'
+import { messages } from './messages';
+import 'keen-slider/keen-slider.min.css'
+import { useKeenSlider } from 'keen-slider/react'
+
 
 export default function Home() {
+  const [count, setCount] = useState(20);
+  const [heartBoom, setHeartBoom] = useState(false);
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+
+
+  const handleHeartClick = () => {
+    setCount(count * 2);
+    setCurrentMessageIndex(() => {
+      let randomIndex = Math.floor(Math.random() * messages.length) + 1;
+      while (randomIndex === currentMessageIndex) {
+        randomIndex = Math.floor(Math.random() * messages.length) + 1;
+      }
+      return randomIndex;
+    }); 
+  };
+
+  useEffect(() => {
+    if (count > 160) {
+      setHeartBoom(true);
+
+      const messageIndex = currentMessageIndex
+      setCurrentMessageIndex(0);
+
+      setTimeout(() => {
+        setHeartBoom(false);
+        setCount(20); 
+        setCurrentMessageIndex(messageIndex+1)
+      }, 1000);
+    }
+  }, [count]); 
+
+  const [sliderRef] = useKeenSlider({
+    mode: "free",
+    slides: {
+      origin: "center",
+      perView: 2,
+      spacing: 15,
+    },
+  })
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+  <main className={styles.main}>
+    <header className={styles.header}>
+      <h1 className={styles.fadeIn}>Oiii amor!!</h1>
+
+        <span
+          role="button"
+          aria-label="heart"
+          className={`${styles.heart} ${heartBoom ? styles.explode : ''}`}
+          onClick={handleHeartClick}
+          style={{ fontSize: `${count}px`}}
+        >
+          ❤️ 
+        </span>
+
+      <div className={styles.imageContainer}>
+      <Image
+            src={cartoon}
+            width={200}
+            height={200}
+            alt="nos"
+          />
+      </div>
+      <p key={currentMessageIndex} className={styles.message}>{messages[currentMessageIndex]}</p>
+
+
+      <div style={{ marginTop: '100px' }}>
+        <p>Em breve...</p>
       </div>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+      <div ref={sliderRef} className="keen-slider" style={{ marginTop: '50px', maxWidth: '100vw' }}>
+        <div className="keen-slider__slide number-slide1">fotos</div>
+        <div className="keen-slider__slide number-slide2">fotos</div>
+        <div className="keen-slider__slide number-slide3">fotos</div>
+        <div className="keen-slider__slide number-slide4">fotos</div>
+        <div className="keen-slider__slide number-slide5">fotos</div>
+        <div className="keen-slider__slide number-slide6">fotos</div>
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </header>
+  </main>
+  );
 }

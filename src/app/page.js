@@ -11,20 +11,19 @@ import { useKeenSlider } from 'keen-slider/react'
 
 export default function Home() {
   const [fillLevel, setFillLevel] = useState(0);
-  const [heartBoom, setHeartBoom] = useState(false);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
 
   const handleHeartClick = () => {
-    let increment = 1; // Increment value
-    const incrementAmount = fillLevel+20; // Desired fill increment
-    const intervalTime = 40; // Time between increments in milliseconds
+    let increment = 1; 
+    const incrementAmount = fillLevel+20; 
+    const intervalTime = 40;
   
     const interval = setInterval(() => {
       setFillLevel((prevFillLevel) => {
         const newFillLevel = prevFillLevel + increment;
         if (newFillLevel >= incrementAmount) {
-          clearInterval(interval); // Stop the interval once it reaches the desired amount
+          clearInterval(interval); 
           return incrementAmount;
         }
         return newFillLevel;
@@ -42,16 +41,16 @@ export default function Home() {
 
   useEffect(() => {
     if (fillLevel >= 100) {
-      setHeartBoom(true);
-
-      const messageIndex = currentMessageIndex
-      setCurrentMessageIndex(0);
-
       setTimeout(() => {
-        setFillLevel(0); 
-        setHeartBoom(false);
-        setCurrentMessageIndex(messageIndex+1)
-      }, 1000);
+        const messageIndex = currentMessageIndex
+        setCurrentMessageIndex(0);
+  
+        setTimeout(() => {
+          setFillLevel(0); 
+          setCurrentMessageIndex(messageIndex+1)
+        }, 1000);
+      }, 1000)
+
     }
   }, [fillLevel]); 
 

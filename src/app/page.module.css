@@ -92,6 +92,8 @@
   text-align: center;
   min-height: 50px;
   max-height: 50px;
+  width: 250px;
+  margin-bottom: 50px;
   opacity: 0;
   animation: justFadeAnimation 1s ease-in-out forwards;
 }
@@ -103,4 +105,17 @@
   100% {
     opacity: 1;
   }
+}
+
+
+.slider{
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  width: 250px;
+  height: 250px;
+  box-sizing: border-box;
+  border: 5px white solid;
+  overflow: hidden;
+  box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
 }

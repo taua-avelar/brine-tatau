@@ -87,7 +87,6 @@ export const messages = [
     "Meus olhos brilham só de ver você sorrir.",
     "Com você, o amor é mais doce e profundo.",
     "Seu amor me faz querer ser uma pessoa melhor.",
-    "Você é a resposta para todas as minhas preces.",
     "Meu coração pertence a você desde o primeiro momento.",
     "Você é a estrela que ilumina meu céu escuro.",
     "Cada dia ao seu lado é uma página do nosso conto de fadas.",
